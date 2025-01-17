@@ -13,7 +13,7 @@ public class Tecnicos
     public string? Nombres { get; set; }
 
     [Required(ErrorMessage = "Favor de introducir el sueldo por hora del técnico.")]
-    [Range(0, 200000, ErrorMessage = "Favor de introducir un sueldo mayor que 1 y menor que 200000.")]
+    [Range(1, 200000, ErrorMessage = "Favor de introducir un sueldo mayor que 1 y menor que 200000.")]
     public float SueldoHora { get; set; }
 
 }
