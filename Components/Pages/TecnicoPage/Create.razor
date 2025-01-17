@@ -58,13 +58,13 @@
         {
             await tecnicoService.Guardar(tecnico);
 
-            ToastService.Notify(new(ToastType.Success, $"Técnico Creado correctamente."));
+            ToastService.Notify(new(ToastType.Success,"Exito", $"Técnico Creado correctamente."));
             tecnico = new Tecnicos();
             navigation.NavigateTo("/Tecnico/Index");
         }
         else
         {
-            ToastService.Notify(new(ToastType.Danger, $"Ya existe un técnico con ese nombre."));
+            ToastService.Notify(new(ToastType.Danger,"Error", $"Ya existe un técnico con ese nombre."));
         }
     }
     public void Nuevo()

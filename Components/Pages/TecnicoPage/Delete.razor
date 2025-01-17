@@ -58,12 +58,12 @@
             var eliminar = await tecnicoservice.Eliminar(tecnicosId);
             if (eliminar)
             {
-                ToastService.Notify(new(ToastType.Success, $"Técnico eliminado correctamente."));
+                ToastService.Notify(new(ToastType.Success,"Exito", $"Técnico eliminado correctamente."));
                 navigation.NavigateTo("/Tecnico/Index");
             }
             else
             {
-                ToastService.Notify(new(ToastType.Danger, $"Error al eliminar tecnico."));
+                ToastService.Notify(new(ToastType.Danger,"Eliminar", $"Error al eliminar tecnico."));
 
             }
         }
