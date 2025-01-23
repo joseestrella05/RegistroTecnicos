@@ -123,7 +123,8 @@
     public async Task<bool> Validar()
     {
         var existeNombre = await clienteService.BuscarNombres(clientes.Nombres);
-        return existeNombre != null;
+        var existeRnc = await clienteService.BuscarRNC(clientes.RNC);
+        return existeNombre != null && existeRnc != null;
     }
 
 }
