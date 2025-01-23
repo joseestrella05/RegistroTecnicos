@@ -1,0 +1,79 @@
+﻿@page "/Cliente/Delete"
+@page "/Cliente/Delete/{ClienteId:int}"
+@inject TecnicoService tecnicoService
+@inject ClientesServices clienteService
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar tipo de t&eacute;cnico</PageTitle>
+<EditForm Model="tecnico" OnValidSubmit="Eliminar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0">Tipo tecnico</h5>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <h7><strong>¿Est&aacute;s seguro de que quieres eliminar este Cliente?</strong></h7>
+                @*Datos*@
+                <div class="mb-1">
+                    <p class="mb-0">ClienteId: @clientes.ClienteId</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Nombre: @clientes.Nombres </p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Fecha: @clientes.FechaIngreso</p>
+                </div>               
+                <div class="mb-1">
+                    <p class="mb-0">Dirrecion: @clientes.Direccion</p>
+                </div> 
+                <div class="mb-1">
+                    <p class="mb-0">RNC: @clientes.RNC</p>
+                </div>
+            </div>
+            @*Footer*@
+            <div class="card-footer text-center mt-3">
+                <a type="button" href="/Tecnico/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Volver </a>
+                <button type="button" class="btn btn-outline-danger ml-2" @onclick="Eliminar"><span class="bi bi-check-circle-fill"></span> Eliminar </button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int ClienteId { get; set; }
+    public Clientes clientes { get; set; } = new Clientes();
+    public List<Tecnicos> tecnico { get; set; } = new List<Tecnicos>();
+    [Inject] protected ToastService ToastService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ClienteId > 0)
+        {
+            clientes = await clienteService.Buscar(ClienteId);
+            tecnico = await tecnicoService.Listar(t => true);
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        if (clientes != null)
+        {
+            var eliminar = await clienteService.Eliminar(ClienteId);
+            if (eliminar)
+            {
+                ToastService.Notify(new(ToastType.Success, "Exito", $"Cliente eliminado correctamente."));
+                navigation.NavigateTo("/Cliente/Index");
+            }
+            else
+            {
+                ToastService.Notify(new(ToastType.Danger, "Eliminar", $"Error al eliminar Cliente."));
+
+            }
+        }
+    }
+}
