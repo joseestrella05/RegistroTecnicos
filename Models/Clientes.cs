@@ -19,11 +19,13 @@ public class Clientes
 
     [Required(ErrorMessage = "El RNC es obligatorio.")]
     [RegularExpression(@"^\d{10}$", ErrorMessage = "El RNC debe contener 10 dígitos.")]
-    public string RNC { get; set; } = string.Empty;
+    public string? RNC { get; set; } 
 
     [Required(ErrorMessage = "El límite de crédito es obligatorio.")]
     [Range(0, 1000000, ErrorMessage = "El límite de crédito debe estar entre 0 y 1,000,000.")]
     public decimal LimiteCredito { get; set; }
+
+    public int TecnicoId { get; set; }
 
     [ForeignKey("TecnicoId")]
     public virtual Tecnicos Tecnicos { get; set; } = null!;
