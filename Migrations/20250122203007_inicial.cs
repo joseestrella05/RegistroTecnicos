@@ -6,11 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RegistrosTecnico.Migrations
 {
     /// <inheritdoc />
-    public partial class cliente : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Tecnicos",
+                columns: table => new
+                {
+                    TecnicoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SueldoHora = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tecnicos", x => x.TecnicoId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Clientes",
                 columns: table => new
@@ -46,6 +60,9 @@ namespace RegistrosTecnico.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Tecnicos");
         }
     }
 }
