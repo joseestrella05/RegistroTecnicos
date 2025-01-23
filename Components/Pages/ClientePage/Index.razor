@@ -1,5 +1,6 @@
 ﻿@page "/Cliente/Index"
 @inject ClientesServices clienteServices
+@inject TecnicoService tecnicoService
 @inject NavigationManager navigation
 
 <PageTitle>Clientes</PageTitle>
@@ -10,9 +11,9 @@
             <a href="/Cliente/Create" class="btn btn-primary">
                 <span class="bi bi-plus-square"></span> Crear
             </a>
-       </div>
+        </div>
 
-       <div class="card-body">
+        <div class="card-body">
             @*labels*@
             <div class="row">
                 @*Filtrar por*@
@@ -31,15 +32,15 @@
                 </div>
                 <div class="col-1">
                     <button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise"
-                            @onclick="Restablecer">
+                    @onclick="Restablecer">
                     </button>
                 </div>
 
             </div>
 
-       </div>
+        </div>
 
-       @*Inputs y botones*@
+        @*Inputs y botones*@
         <div class="row align-items-center">
             @*filtro*@
             <div class="col-3">
@@ -79,7 +80,7 @@
                     <th>Fecha</th>
                     <th>Direccion</th>
                     <th>RNC</th>
-                    <th>Limite de Credito</th>
+                    <th>LimiteCredito</th>
                     <th>Tecnico</th>
                     <th>Modificar</th>
                     <th>Eliminar</th>
@@ -88,6 +89,7 @@
             <tbody>
                 @foreach (var cliente in clientes)
                 {
+                    var Tecnico = tecnicos.FirstOrDefault(t => t.TecnicoId == cliente.TecnicoId);
                     <tr>
                         <td>@cliente.ClienteId</td>
                         <td>@cliente.Nombres</td>
@@ -95,7 +97,7 @@
                         <td>@cliente.Direccion</td>
                         <td>@cliente.RNC</td>
                         <td>@cliente.LimiteCredito</td>
-                        <td>@cliente.Tecnicos.Nombres</td>
+                        <td>@(Tecnico?.Nombres ?? "no encontrado")</td>
                         <td>
                             <a href="/Cliente/Edit/@cliente.ClienteId" class="btn btn-outline-primary bi bi-pencil-square"></a>
                         </td>
@@ -105,7 +107,7 @@
 
                     </tr>
                 }
-             </tbody>
+            </tbody>
         </table>
 
         <div class="card-footer space-between">
@@ -117,14 +119,18 @@
 
 @code {
     public List<Clientes> clientes = new List<Clientes>();
+    public List<Tecnicos> tecnicos = new List<Tecnicos>();
     private string filtro = "";
     private string valorFiltro = "";
-    public DateTime? Desde { get; set; } = null;
-    public DateTime? Hasta { get; set; } = null;
+    public DateTime? Desde { get; set; } 
+    public DateTime? Hasta { get; set; } 
 
     protected override async Task OnInitializedAsync()
     {
-        clientes = await clienteServices.Listar(t => true);
+        clientes = await clienteServices.Listar(t=>true);
+        tecnicos = await tecnicoService.Listar(t => true);
+        Desde = null;
+        Hasta = null;
     }
 
     private async Task Buscar()
