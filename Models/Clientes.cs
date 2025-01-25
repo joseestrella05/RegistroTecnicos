@@ -23,8 +23,9 @@ public class Clientes
 
     [Required(ErrorMessage = "El límite de crédito es obligatorio.")]
     [Range(0, 1000000, ErrorMessage = "El límite de crédito debe estar entre 0 y 1,000,000.")]
-    public decimal LimiteCredito { get; set; }
+    public decimal? LimiteCredito { get; set; }
 
+    [Required(ErrorMessage = "El Campus es obligatorio.")]
     public int TecnicoId { get; set; }
 
     [ForeignKey("TecnicoId")]
