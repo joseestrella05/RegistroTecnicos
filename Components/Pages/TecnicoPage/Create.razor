@@ -52,13 +52,17 @@
     public bool NombreRepetido { get; set; }
     [Inject] protected ToastService ToastService { get; set; }
 
+    public Create(ToastService toastService)
+    {
+        ToastService = toastService;
+    }
+
     public async Task Crear()
     {
         if (!await Validar())
         {
             await tecnicoService.Guardar(tecnico);
-
-            ToastService.Notify(new(ToastType.Success,"Exito", $"Técnico Creado correctamente."));
+            ToastService.Notify(new(ToastType.Success, "Exito", $"Técnico Creado correctamente."));
             tecnico = new Tecnicos();
             navigation.NavigateTo("/Tecnico/Index");
         }
