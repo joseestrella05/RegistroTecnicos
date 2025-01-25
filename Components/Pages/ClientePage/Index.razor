@@ -96,7 +96,7 @@
                         <td>@cliente.FechaIngreso</td>
                         <td>@cliente.Direccion</td>
                         <td>@cliente.RNC</td>
-                        <td>@cliente.LimiteCredito</td>
+                        <td>@cliente.LimiteCredito.ToString("N2")</td>
                         <td>@(Tecnico?.Nombres ?? "no encontrado")</td>
                         <td>
                             <a href="/Cliente/Edit/@cliente.ClienteId" class="btn btn-outline-primary bi bi-pencil-square"></a>
