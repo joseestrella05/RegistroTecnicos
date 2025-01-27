@@ -9,4 +9,6 @@ public class Contexto(DbContextOptions<Contexto> options) : DbContext(options)
 
     public DbSet<Clientes> Clientes { get; set; }
 
+    public DbSet<Ciudades> Ciudades { get; set; }
+
 }
