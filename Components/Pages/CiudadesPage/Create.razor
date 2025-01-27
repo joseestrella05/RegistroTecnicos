@@ -1,0 +1,76 @@
+﻿@page "/Ciudades/Create"
+@inject CiudadeServices ciudadeService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Create</PageTitle>
+<EditForm Model="ciudades" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h5 class="card-title">Crear Ciudades</h5>
+            </div>
+
+            <div class="card-body">
+                @*Id*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>CiudadesId</strong></label>
+                    <InputNumber class="form-control" @bind-Value="ciudades.CiudadesId" READONLY></InputNumber>
+                </div>
+
+                @*Nombres*@
+                <div class="mb-3">
+                    <label class="form-label" for="nombres"><strong>Nombre</strong></label>
+                    <InputText id="nombres" class="form-control" @bind-Value="ciudades.Nombres"></InputText>
+                    <ValidationMessage For="@(()=> ciudades.Nombres)"></ValidationMessage>
+                </div>
+
+
+            </div>
+
+            @* footer *@
+            <div class="card-footer text-center mt-3">
+                <button type="button" class="btn btn-outline-primary ml-2" @onclick="Nuevo"><span class="bi bi-plus"></span> Nuevo </button>
+                <button type="submit" class="btn btn-outline-success ml-2"><span class="bi bi-check-circle-fill"></span> Guardar </button>
+                <a type="button" href="/Ciudades/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Volver </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    public Ciudades ciudades { get; set; } = new Ciudades();
+    [Inject] protected ToastService ToastService { get; set; }
+
+    public Create(ToastService toastService)
+    {
+        ToastService = toastService;
+    }
+
+    public async Task Crear()
+    {
+        if (!await Validar())
+        {
+            await ciudadeService.Guardar(ciudades);
+            ToastService.Notify(new(ToastType.Success, "Exito", $"Ciudad Creada correctamente."));
+            ciudades = new Ciudades();
+            navigation.NavigateTo("/Ciudades/Index");
+        }
+        else
+        {
+            ToastService.Notify(new(ToastType.Danger, "Error", $"Ya existe una Ciudad con ese nombre."));
+        }
+    }
+    public void Nuevo()
+    {
+        ciudades = new Ciudades();
+    }
+
+    public async Task<bool> Validar()
+    {
+        var existeTecnico = await ciudadeService.BuscarNombres(ciudades.Nombres);
+        return existeTecnico != null;
+    }
+}
