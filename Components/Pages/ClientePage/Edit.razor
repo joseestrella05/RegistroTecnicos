@@ -1,6 +1,7 @@
 ﻿@page "/Cliente/Edit/{ClienteId:int}"
 @inject TecnicoService tecnicoService
 @inject ClientesServices clienteService
+@inject CiudadeServices ciudadeService
 @inject NavigationManager navigation
 @rendermode InteractiveServer
 
@@ -41,6 +42,24 @@
                     <label class="form-label"><strong>Dirrecion</strong></label>
                     <InputText class="form-control" @bind-Value="clientes.Direccion"></InputText>
                     <ValidationMessage For="@(()=> clientes.Direccion)"></ValidationMessage>
+                </div>
+
+                @*Ciudades*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Ciudad</strong></label>
+
+                    <div class="input-group">
+
+                        <InputSelect class="form-control form-select" @bind-Value="clientes.CiudadesId">
+                            <option value="0" selected disabled>Elija una opción</option>
+                            @foreach (var Ciudades in ciudades)
+                            {
+                                <option value="@Ciudades.CiudadesId">@Ciudades.Nombres</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> clientes.ClienteId)"></ValidationMessage>
+
+                    </div>
                 </div>
 
                 @*RNC*@
@@ -92,6 +111,7 @@
     public int ClienteId { get; set; }
     public Clientes clientes { get; set; } = new Clientes();
     public List<Tecnicos> tecnico { get; set; } = new List<Tecnicos>();
+    public List<Ciudades> ciudades { get; set; } = new List<Ciudades>();
     [Inject] protected ToastService ToastService { get; set; }
 
 
@@ -101,6 +121,7 @@
         {
             clientes = await clienteService.Buscar(ClienteId);
             tecnico = await tecnicoService.Listar(t=> true);
+            ciudades = await ciudadeService.Listar(t => true);
         }
     }
 
