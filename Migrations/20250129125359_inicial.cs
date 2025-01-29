@@ -49,11 +49,18 @@ namespace RegistrosTecnico.Migrations
                     Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RNC = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LimiteCredito = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TecnicoId = table.Column<int>(type: "int", nullable: false)
+                    TecnicoId = table.Column<int>(type: "int", nullable: false),
+                    CiudadesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.ClienteId);
+                    table.ForeignKey(
+                        name: "FK_Clientes_Ciudades_CiudadesId",
+                        column: x => x.CiudadesId,
+                        principalTable: "Ciudades",
+                        principalColumn: "CiudadesId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Clientes_Tecnicos_TecnicoId",
                         column: x => x.TecnicoId,
@@ -61,6 +68,11 @@ namespace RegistrosTecnico.Migrations
                         principalColumn: "TecnicoId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_CiudadesId",
+                table: "Clientes",
+                column: "CiudadesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_TecnicoId",
@@ -72,10 +84,10 @@ namespace RegistrosTecnico.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Ciudades");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Ciudades");
 
             migrationBuilder.DropTable(
                 name: "Tecnicos");

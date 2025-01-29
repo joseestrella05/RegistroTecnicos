@@ -12,7 +12,7 @@ using RegistrosTecnico.DAL;
 namespace RegistrosTecnico.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20250127222123_inicial")]
+    [Migration("20250129125359_inicial")]
     partial class inicial
     {
         /// <inheritdoc />
@@ -50,6 +50,9 @@ namespace RegistrosTecnico.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
 
+                    b.Property<int>("CiudadesId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Direccion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -72,6 +75,8 @@ namespace RegistrosTecnico.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ClienteId");
+
+                    b.HasIndex("CiudadesId");
 
                     b.HasIndex("TecnicoId");
 
@@ -100,11 +105,19 @@ namespace RegistrosTecnico.Migrations
 
             modelBuilder.Entity("RegistrosTecnico.Models.Clientes", b =>
                 {
+                    b.HasOne("RegistrosTecnico.Models.Ciudades", "Ciudades")
+                        .WithMany()
+                        .HasForeignKey("CiudadesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RegistrosTecnico.Models.Tecnicos", "Tecnicos")
                         .WithMany()
                         .HasForeignKey("TecnicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ciudades");
 
                     b.Navigation("Tecnicos");
                 });

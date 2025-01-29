@@ -1,6 +1,7 @@
 ﻿@page "/Cliente/Index"
 @inject ClientesServices clienteServices
 @inject TecnicoService tecnicoService
+@inject CiudadeServices ciudadeService
 @inject NavigationManager navigation
 
 <PageTitle>Clientes</PageTitle>
@@ -52,6 +53,7 @@
                     <option value="Direccion">Direccion</option>
                     <option value="RNC">RNC</option>
                     <option value="Limite de Credito">Limite de Credito</option>
+                    <option value="Ciudades">Ciudades</option>
                 </InputSelect>
             </div>
 
@@ -79,6 +81,7 @@
                     <th>Nombres</th>
                     <th>Fecha</th>
                     <th>Direccion</th>
+                    <th>Ciudad</th>
                     <th>RNC</th>
                     <th>LimiteCredito</th>
                     <th>Tecnico</th>
@@ -90,11 +93,14 @@
                 @foreach (var cliente in clientes)
                 {
                     var Tecnico = tecnicos.FirstOrDefault(t => t.TecnicoId == cliente.TecnicoId);
+                    var Ciudad = ciudades.FirstOrDefault(c => c.CiudadesId == cliente.CiudadesId);
+
                     <tr>
                         <td>@cliente.ClienteId</td>
                         <td>@cliente.Nombres</td>
                         <td>@cliente.FechaIngreso</td>
                         <td>@cliente.Direccion</td>
+                        <td>@(Ciudad?.Nombres ?? "no encontrado")</td>
                         <td>@cliente.RNC</td>
                         <td>@cliente.LimiteCredito.ToString("N2")</td>
                         <td>@(Tecnico?.Nombres ?? "no encontrado")</td>
@@ -120,17 +126,17 @@
 @code {
     public List<Clientes> clientes = new List<Clientes>();
     public List<Tecnicos> tecnicos = new List<Tecnicos>();
+    public List<Ciudades> ciudades = new List<Ciudades>();
     private string filtro = "";
     private string valorFiltro = "";
-    public DateTime? Desde { get; set; } 
-    public DateTime? Hasta { get; set; } 
+    public DateTime? Desde { get; set; } = null;
+    public DateTime? Hasta { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
         clientes = await clienteServices.Listar(t=>true);
         tecnicos = await tecnicoService.Listar(t => true);
-        Desde = null;
-        Hasta = null;
+        ciudades = await ciudadeService.Listar(t => true);
     }
 
     private async Task Buscar()
@@ -161,6 +167,10 @@
             else if (filtro == "Limite de Credito" && decimal.TryParse(valorFiltro, out decimal limiteCredito))
             {
                 clientes = await clienteServices.Listar(c => c.LimiteCredito == limiteCredito);
+            } 
+            else if (filtro == "Ciudades")
+            {
+                ciudades = await ciudadeService.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
 
 

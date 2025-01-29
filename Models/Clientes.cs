@@ -30,4 +30,12 @@ public class Clientes
 
     [ForeignKey("TecnicoId")]
     public virtual Tecnicos Tecnicos { get; set; } = null!;
+
+    [Required(ErrorMessage = "El Campus es obligatorio.")]
+    public int CiudadesId { get; set; }
+
+    [ForeignKey("CiudadesId")]
+    public virtual Ciudades Ciudades { get; set; } = null!;
+
+
 }
