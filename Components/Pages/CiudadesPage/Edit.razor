@@ -5,7 +5,7 @@
 @inject NavigationManager navigation
 
 <PageTitle>Modificar</PageTitle>
-<EditForm Model="ciudades" OnValidSubmit="Modificar">
+<EditForm Model="Ciudades" OnValidSubmit="Modificar">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="container">
@@ -18,14 +18,14 @@
                 @*Id*@
                 <div class="mb-3">
                     <label class="form-label"><strong>CiudadesId</strong></label>
-                    <InputNumber class="form-control" @bind-Value="ciudades.CiudadesId" READONLY></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="Ciudades.CiudadesId" READONLY></InputNumber>
                 </div>
 
                 @*Nombres*@
                 <div class="mb-3">
                     <label class="form-label" for="nombres"><strong>Nombre</strong></label>
-                    <InputText id="nombres" class="form-control" @bind-Value="ciudades.Nombres"></InputText>
-                    <ValidationMessage For="@(()=> ciudades.Nombres)"></ValidationMessage>
+                    <InputText id="nombres" class="form-control" @bind-Value="Ciudades.Nombres"></InputText>
+                    <ValidationMessage For="@(()=> Ciudades.Nombres)"></ValidationMessage>
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
 @code {
     [Parameter]
     public int CiudadesId { get; set; }
-    public Ciudades ciudades { get; set; } = new Ciudades();
+    public Ciudades Ciudades { get; set; } = new Ciudades();
     [Inject] protected ToastService ToastService { get; set; }
 
     public Edit(ToastService toastService)
@@ -53,7 +53,7 @@
     {
         if (CiudadesId > 0)
         {
-            ciudades = await ciudadesService.Buscar(CiudadesId);
+            Ciudades = await ciudadesService.Buscar(CiudadesId);
         }
     }
 
@@ -61,7 +61,7 @@
     {
         if (!await Validar())
         {
-            await ciudadesService.Guardar(ciudades);
+            await ciudadesService.Guardar(Ciudades);
 
             ToastService.Notify(new(ToastType.Success, "Exito", $"Ciudad modificado correctamente."));
             navigation.NavigateTo("/Tecnico/Index");
@@ -74,7 +74,7 @@
 
     public async Task<bool> Validar()
     {
-        var existeCiudad = await ciudadesService.BuscarNombres(ciudades.Nombres);
+        var existeCiudad = await ciudadesService.BuscarNombres(Ciudades.Nombres);
         return existeCiudad != null;
     }
 

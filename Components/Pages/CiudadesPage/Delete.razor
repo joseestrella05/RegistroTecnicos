@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Eliminar Ciudades</PageTitle>
-<EditForm Model="ciudades" OnValidSubmit="Eliminar">
+<EditForm Model="Ciudades" OnValidSubmit="Eliminar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -18,10 +18,10 @@
                 <h7><strong>¿Est&aacute;s seguro de que quieres eliminar esta ciudad?</strong></h7>
                 @*Datos*@
                 <div class="mb-1">
-                    <p class="mb-0">CiudadesId: @ciudades.CiudadesId</p>
+                    <p class="mb-0">CiudadesId: @Ciudades.CiudadesId</p>
                 </div>
                 <div class="mb-1">
-                    <p class="mb-0">Nombre: @ciudades.Nombres </p>
+                    <p class="mb-0">Nombre: @Ciudades.Nombres </p>
                 </div>
             </div>
             @*Footer*@
@@ -37,7 +37,7 @@
 @code {
     [Parameter]
     public int CiudadesId { get; set; }
-    public Ciudades ciudades { get; set; } = new Ciudades();
+    public Ciudades Ciudades { get; set; } = new Ciudades();
     [Inject] protected ToastService ToastService { get; set; }
 
     public Delete(ToastService toastService)
@@ -49,13 +49,13 @@
     {
         if (CiudadesId > 0)
         {
-            ciudades = await ciudadesServices.Buscar(CiudadesId);
+            Ciudades = await ciudadesServices.Buscar(CiudadesId);
         }
     }
 
     public async Task Eliminar()
     {
-        if (ciudades != null)
+        if (Ciudades != null)
         {
             var eliminar = await ciudadesServices.Eliminar(CiudadesId);
             if (eliminar)

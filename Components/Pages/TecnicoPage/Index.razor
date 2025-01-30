@@ -63,7 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var tecnico in tecnicos)
+                    @foreach (var tecnico in Tenicos)
                     {
                         <tr>
                             <td>@tecnico.TecnicoId</td>
@@ -84,13 +84,13 @@
 </div>
 
 @code {
-    public List<Tecnicos> tecnicos = new List<Tecnicos>();
+    public List<Tecnicos> Tenicos = new List<Tecnicos>();
     private string filtro = "";
     private string valorFiltro = "";
 
     protected override async Task OnInitializedAsync()
     {
-        tecnicos = await tecnicoService.Listar(t => true);
+        Tenicos = await tecnicoService.Listar(t => true);
     }
 
     private async Task Buscar()
@@ -99,21 +99,21 @@
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int TecnicoId))
             {
-                tecnicos = await tecnicoService.Listar(t => t.TecnicoId == TecnicoId);
+                Tenicos = await tecnicoService.Listar(t => t.TecnicoId == TecnicoId);
             }
             else if (filtro == "Nombres")
             {
-                tecnicos = await tecnicoService.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Tenicos = await tecnicoService.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "SueldoHora" && float.TryParse(valorFiltro, out float SueldoHora))
             {
-                tecnicos = await tecnicoService.Listar(t => t.SueldoHora == SueldoHora);
+                Tenicos = await tecnicoService.Listar(t => t.SueldoHora == SueldoHora);
             }
 
         }
         else
         {
-            tecnicos = await tecnicoService.Listar(p => true);
+            Tenicos = await tecnicoService.Listar(p => true);
         }
     }
 }

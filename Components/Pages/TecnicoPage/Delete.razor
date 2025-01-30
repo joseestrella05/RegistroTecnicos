@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Eliminar t&eacute;cnico</PageTitle>
-<EditForm Model="tecnico" OnValidSubmit="Eliminar">
+<EditForm Model="Tecnico" OnValidSubmit="Eliminar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -18,13 +18,13 @@
                 <h7><strong>¿Est&aacute;s seguro de que quieres eliminar este t&eacute;cnico?</strong></h7>
                 @*Datos*@
                 <div class="mb-1">
-                    <p class="mb-0">T&eacute;cnicoId: @tecnico.TecnicoId</p>
+                    <p class="mb-0">T&eacute;cnicoId: @Tecnico.TecnicoId</p>
                 </div>
                 <div class="mb-1">
-                    <p class="mb-0">Nombre: @tecnico.Nombres </p>
+                    <p class="mb-0">Nombre: @Tecnico.Nombres </p>
                 </div>
                 <div class="mb-1">
-                    <p class="mb-0">Sueldo Hora: @tecnico.SueldoHora</p>
+                    <p class="mb-0">Sueldo Hora: @Tecnico.SueldoHora</p>
                 </div>
             </div>
             @*Footer*@
@@ -40,20 +40,20 @@
 @code {
     [Parameter]
     public int tecnicosId { get; set; }
-    public Tecnicos tecnico { get; set; } = new Tecnicos();
+    public Tecnicos Tecnico { get; set; } = new Tecnicos();
     [Inject] protected ToastService ToastService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         if (tecnicosId > 0)
         {
-            tecnico = await tecnicoservice.Buscar(tecnicosId);
+            Tecnico = await tecnicoservice.Buscar(tecnicosId);
         }
     }
 
     public async Task Eliminar()
     {
-        if (tecnico != null)
+        if (Tecnico != null)
         {
             var eliminar = await tecnicoservice.Eliminar(tecnicosId);
             if (eliminar)

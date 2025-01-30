@@ -4,7 +4,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Create</PageTitle>
-<EditForm Model="tecnico" OnValidSubmit="Crear">
+<EditForm Model="Tecnico" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="container">
@@ -17,21 +17,21 @@
                 @*Id*@
                 <div class="mb-3">
                     <label class="form-label"><strong>TecnicoId</strong></label>
-                    <InputNumber class="form-control" @bind-Value="tecnico.TecnicoId" READONLY></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="Tecnico.TecnicoId" READONLY></InputNumber>
                 </div>
 
                 @*Nombres*@
                 <div class="mb-3">
                     <label class="form-label" for="nombres"><strong>Nombre</strong></label>
-                    <InputText id="nombres" class="form-control" @bind-Value="tecnico.Nombres"></InputText>
-                    <ValidationMessage For="@(()=> tecnico.Nombres)"></ValidationMessage>
+                    <InputText id="nombres" class="form-control" @bind-Value="Tecnico.Nombres"></InputText>
+                    <ValidationMessage For="@(()=> Tecnico.Nombres)"></ValidationMessage>
                 </div>
 
                 @*Sueldo Hora*@
                 <div class="mb-3">
                     <label class="form-label" for="sueldo"><strong>Sueldo por hora</strong></label>
-                    <InputNumber id="sueldo" class="form-control" @bind-Value="tecnico.SueldoHora"></InputNumber>
-                    <ValidationMessage For="@(()=> tecnico.SueldoHora)"></ValidationMessage>
+                    <InputNumber id="sueldo" class="form-control" @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                    <ValidationMessage For="@(()=> Tecnico.SueldoHora)"></ValidationMessage>
                 </div>
 
             </div>
@@ -48,7 +48,7 @@
 
 
 @code {
-    public Tecnicos tecnico { get; set; } = new Tecnicos();
+    public Tecnicos Tecnico { get; set; } = new Tecnicos();
     public bool NombreRepetido { get; set; }
     [Inject] protected ToastService ToastService { get; set; }
 
@@ -61,9 +61,9 @@
     {
         if (!await Validar())
         {
-            await tecnicoService.Guardar(tecnico);
+            await tecnicoService.Guardar(Tecnico);
             ToastService.Notify(new(ToastType.Success, "Exito", $"Técnico Creado correctamente."));
-            tecnico = new Tecnicos();
+            Tecnico = new Tecnicos();
             navigation.NavigateTo("/Tecnico/Index");
         }
         else
@@ -73,12 +73,12 @@
     }
     public void Nuevo()
     {
-        tecnico = new Tecnicos();
+        Tecnico = new Tecnicos();
     }
 
     public async Task<bool> Validar()
     {
-        var existeTecnico = await tecnicoService.BuscarNombres(tecnico.Nombres);
+        var existeTecnico = await tecnicoService.BuscarNombres(Tecnico.Nombres);
         return existeTecnico != null;
     }
 }

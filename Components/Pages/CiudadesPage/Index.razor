@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var ciudades in ciudades)
+                    @foreach (var ciudades in Ciudades)
                     {
                         <tr>
                             <td>@ciudades.CiudadesId</td>
@@ -79,13 +79,13 @@
 </div>
 
 @code {
-    public List<Ciudades> ciudades = new List<Ciudades>();
+    public List<Ciudades> Ciudades = new List<Ciudades>();
     private string filtro = "";
     private string valorFiltro = "";
 
     protected override async Task OnInitializedAsync()
     {
-        ciudades = await ciudadesService.Listar(t => true);
+        Ciudades = await ciudadesService.Listar(t => true);
     }
 
     private async Task Buscar()
@@ -94,17 +94,17 @@
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int ciudadeId))
             {
-                ciudades = await ciudadesService.Listar(c => c.CiudadesId == ciudadeId);
+                Ciudades = await ciudadesService.Listar(c => c.CiudadesId == ciudadeId);
             }
             else if (filtro == "Nombres")
             {
-                ciudades = await ciudadesService.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Ciudades = await ciudadesService.Listar(t => t.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
 
         }
         else
         {
-            ciudades = await ciudadesService.Listar(p => true);
+            Ciudades = await ciudadesService.Listar(p => true);
         }
     }
 }

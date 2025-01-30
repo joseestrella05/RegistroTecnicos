@@ -5,7 +5,7 @@
 @inject NavigationManager navigation
 
 <PageTitle>Eliminar tipo de t&eacute;cnico</PageTitle>
-<EditForm Model="tecnico" OnValidSubmit="Eliminar">
+<EditForm Model="Tecnico" OnValidSubmit="Eliminar">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow-lg">
@@ -18,19 +18,19 @@
                 <h7><strong>¿Est&aacute;s seguro de que quieres eliminar este Cliente?</strong></h7>
                 @*Datos*@
                 <div class="mb-1">
-                    <p class="mb-0">ClienteId: @clientes.ClienteId</p>
+                    <p class="mb-0">ClienteId: @Cliente.ClienteId</p>
                 </div>
                 <div class="mb-1">
-                    <p class="mb-0">Nombre: @clientes.Nombres </p>
+                    <p class="mb-0">Nombre: @Cliente.Nombres </p>
                 </div>
                 <div class="mb-1">
-                    <p class="mb-0">Fecha: @clientes.FechaIngreso</p>
+                    <p class="mb-0">Fecha: @Cliente.FechaIngreso</p>
                 </div>               
                 <div class="mb-1">
-                    <p class="mb-0">Dirrecion: @clientes.Direccion</p>
+                    <p class="mb-0">Dirrecion: @Cliente.Direccion</p>
                 </div> 
                 <div class="mb-1">
-                    <p class="mb-0">RNC: @clientes.RNC</p>
+                    <p class="mb-0">RNC: @Cliente.RNC</p>
                 </div>
             </div>
             @*Footer*@
@@ -46,22 +46,22 @@
 @code {
     [Parameter]
     public int ClienteId { get; set; }
-    public Clientes clientes { get; set; } = new Clientes();
-    public List<Tecnicos> tecnico { get; set; } = new List<Tecnicos>();
+    public Clientes Cliente { get; set; } = new Clientes();
+    public List<Tecnicos> Tecnico { get; set; } = new List<Tecnicos>();
     [Inject] protected ToastService ToastService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         if (ClienteId > 0)
         {
-            clientes = await clienteService.Buscar(ClienteId);
-            tecnico = await tecnicoService.Listar(t => true);
+            Cliente = await clienteService.Buscar(ClienteId);
+            Tecnico = await tecnicoService.Listar(t => true);
         }
     }
 
     public async Task Eliminar()
     {
-        if (clientes != null)
+        if (Cliente != null)
         {
             var eliminar = await clienteService.Eliminar(ClienteId);
             if (eliminar)

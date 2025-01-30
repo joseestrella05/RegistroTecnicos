@@ -4,7 +4,7 @@
 @rendermode InteractiveServer
 
 <PageTitle>Create</PageTitle>
-<EditForm Model="ciudades" OnValidSubmit="Crear">
+<EditForm Model="Ciudades" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="container">
@@ -17,14 +17,14 @@
                 @*Id*@
                 <div class="mb-3">
                     <label class="form-label"><strong>CiudadesId</strong></label>
-                    <InputNumber class="form-control" @bind-Value="ciudades.CiudadesId" READONLY></InputNumber>
+                    <InputNumber class="form-control" @bind-Value="Ciudades.CiudadesId" READONLY></InputNumber>
                 </div>
 
                 @*Nombres*@
                 <div class="mb-3">
                     <label class="form-label" for="nombres"><strong>Nombre</strong></label>
-                    <InputText id="nombres" class="form-control" @bind-Value="ciudades.Nombres"></InputText>
-                    <ValidationMessage For="@(()=> ciudades.Nombres)"></ValidationMessage>
+                    <InputText id="nombres" class="form-control" @bind-Value="Ciudades.Nombres"></InputText>
+                    <ValidationMessage For="@(()=> Ciudades.Nombres)"></ValidationMessage>
                 </div>
 
 
@@ -41,7 +41,7 @@
 </EditForm>
 
 @code {
-    public Ciudades ciudades { get; set; } = new Ciudades();
+    public Ciudades Ciudades { get; set; } = new Ciudades();
     [Inject] protected ToastService ToastService { get; set; }
 
     public Create(ToastService toastService)
@@ -53,9 +53,9 @@
     {
         if (!await Validar())
         {
-            await ciudadeService.Guardar(ciudades);
+            await ciudadeService.Guardar(Ciudades);
             ToastService.Notify(new(ToastType.Success, "Exito", $"Ciudad Creada correctamente."));
-            ciudades = new Ciudades();
+            Ciudades = new Ciudades();
             navigation.NavigateTo("/Ciudades/Index");
         }
         else
@@ -65,12 +65,12 @@
     }
     public void Nuevo()
     {
-        ciudades = new Ciudades();
+        Ciudades = new Ciudades();
     }
 
     public async Task<bool> Validar()
     {
-        var existeTecnico = await ciudadeService.BuscarNombres(ciudades.Nombres);
+        var existeTecnico = await ciudadeService.BuscarNombres(Ciudades.Nombres);
         return existeTecnico != null;
     }
 }
