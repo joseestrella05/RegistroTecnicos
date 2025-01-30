@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace RegistrosTecnico.Services;
 
-public class CiudadeServices(IDbContextFactory<Contexto> DbFactory)
+public class CiudadesService(IDbContextFactory<Contexto> DbFactory)
 {
     public async Task<bool> Existe(int id)
     {
