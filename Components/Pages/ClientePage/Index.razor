@@ -156,11 +156,11 @@
                 clientes = await clienteServices
                 .Listar(c => c.FechaIngreso >= Desde && c.FechaIngreso <= Hasta); ;
             }
-            else if (filtro == "Direccion")
+            else if (filtro == "Asunto")
             {
                 clientes = await clienteServices.Listar(c => c.Direccion.ToLower().Contains(valorFiltro.ToLower()));
             }
-            else if (filtro == "RNC")
+            else if (filtro == "Descripcion")
             {
                 clientes = await clienteServices.Listar(c => c.RNC.ToLower().Contains(valorFiltro.ToLower()));
             }

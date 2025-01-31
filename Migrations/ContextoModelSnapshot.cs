@@ -41,16 +41,16 @@ namespace RegistrosTecnico.Migrations
 
             modelBuilder.Entity("RegistrosTecnico.Models.Clientes", b =>
                 {
-                    b.Property<int>("ClienteId")
+                    b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
                     b.Property<int>("CiudadesId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Direccion")
+                    b.Property<string>("Asunto")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -64,14 +64,14 @@ namespace RegistrosTecnico.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RNC")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TecnicoId")
                         .HasColumnType("int");
 
-                    b.HasKey("ClienteId");
+                    b.HasKey("TicketId");
 
                     b.HasIndex("CiudadesId");
 
