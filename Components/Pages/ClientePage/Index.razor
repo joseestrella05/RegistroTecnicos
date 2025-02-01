@@ -90,10 +90,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var cliente in clientes)
+                @foreach (var cliente in Cliente)
                 {
-                    var Tecnico = tecnicos.FirstOrDefault(t => t.TecnicoId == cliente.TecnicoId);
-                    var Ciudad = ciudades.FirstOrDefault(c => c.CiudadesId == cliente.CiudadesId);
+                    var Tecnico = Tecnicos.FirstOrDefault(t => t.TecnicoId == cliente.TecnicoId);
+                    var Ciudad = Ciudades.FirstOrDefault(c => c.CiudadesId == cliente.CiudadesId);
 
                     <tr>
                         <td>@cliente.ClienteId</td>
@@ -117,16 +117,16 @@
         </table>
 
         <div class="card-footer space-between">
-            <label><strong>Cantidad: @clientes.Count()</strong></label>
-            <label><strong>Total: @clientes.Sum(c => c.LimiteCredito)</strong</label>
+            <label><strong>Cantidad: @Cliente.Count()</strong></label>
+            <label><strong>Total: @Cliente.Sum(c => c.LimiteCredito)</strong</label>
         </div>
     </div>
 </div>
 
 @code {
-    public List<Clientes> clientes = new List<Clientes>();
-    public List<Tecnicos> tecnicos = new List<Tecnicos>();
-    public List<Ciudades> ciudades = new List<Ciudades>();
+    public List<Clientes> Cliente = new List<Clientes>();
+    public List<Tecnicos> Tecnicos = new List<Tecnicos>();
+    public List<Ciudades> Ciudades = new List<Ciudades>();
     private string filtro = "";
     private string valorFiltro = "";
     public DateTime? Desde { get; set; } = null;
@@ -134,9 +134,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        clientes = await clienteServices.Listar(t=>true);
-        tecnicos = await tecnicoService.Listar(t => true);
-        ciudades = await ciudadeService.Listar(t => true);
+        Cliente = await clienteServices.Listar(t=>true);
+        Tecnicos = await tecnicoService.Listar(t => true);
+        Ciudades = await ciudadeService.Listar(t => true);
     }
 
     private async Task Buscar()
@@ -145,45 +145,45 @@
         {
             if (filtro == "id" && int.TryParse(valorFiltro, out int clienteId))
             {
-                clientes = await clienteServices.Listar(c => c.ClienteId == clienteId);
+                Cliente = await clienteServices.Listar(c => c.ClienteId == clienteId);
             }
             else if (filtro == "Nombres")
             {
-                clientes = await clienteServices.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Cliente = await clienteServices.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "Fecha")
             {
-                clientes = await clienteServices
+                Cliente = await clienteServices
                 .Listar(c => c.FechaIngreso >= Desde && c.FechaIngreso <= Hasta); ;
             }
             else if (filtro == "Asunto")
             {
-                clientes = await clienteServices.Listar(c => c.Direccion.ToLower().Contains(valorFiltro.ToLower()));
+                Cliente = await clienteServices.Listar(c => c.Direccion.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "Descripcion")
             {
-                clientes = await clienteServices.Listar(c => c.RNC.ToLower().Contains(valorFiltro.ToLower()));
+                Cliente = await clienteServices.Listar(c => c.RNC.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "Limite de Credito" && decimal.TryParse(valorFiltro, out decimal limiteCredito))
             {
-                clientes = await clienteServices.Listar(c => c.LimiteCredito == limiteCredito);
+                Cliente = await clienteServices.Listar(c => c.LimiteCredito == limiteCredito);
             } 
             else if (filtro == "Ciudades")
             {
-                ciudades = await ciudadeService.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Ciudades = await ciudadeService.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
 
 
         }
         else
         {
-            clientes = await clienteServices.Listar(p => true);
+            Cliente = await clienteServices.Listar(p => true);
         }
     }
 
     private async Task Restablecer()
     {
-        clientes = await clienteServices.Listar(p => true);
+        Cliente = await clienteServices.Listar(p => true);
         filtro = "";
         valorFiltro = "";
         Desde = null;
