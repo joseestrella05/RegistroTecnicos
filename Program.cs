@@ -19,7 +19,7 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<TecnicoService>();
 builder.Services.AddScoped<ClientesServices>();
 builder.Services.AddScoped<CiudadeServices>();
-
+builder.Services.AddScoped<TicketsServices>();
 
 var app = builder.Build();
 
