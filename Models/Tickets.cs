@@ -24,7 +24,7 @@ public class Tickets
 
     [Required(ErrorMessage = "El Campo es obligatorio.")]
     [RegularExpression(@"^[A-Z0-9\d{2}]+$", ErrorMessage = "Solo se permiten Numero")]
-    public string? TiempoLimite { get; set; }
+    public string? TiempoInvertido { get; set; }
 
     [Required(ErrorMessage = "El Campus es obligatorio.")]
     public int TecnicoId { get; set; }
