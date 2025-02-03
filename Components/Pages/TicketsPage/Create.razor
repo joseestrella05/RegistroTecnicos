@@ -124,7 +124,7 @@
         if (Tickets.TicketId == 0)
         {
             await ticketServices.Guardar(Tickets);
-            ToastService.Notify(new(ToastType.Success, "Exito", $"Cliente Creado correctamente."));
+            ToastService.Notify(new(ToastType.Success, "Exito", $"Ticket Creado correctamente."));
             Tickets = new Tickets();
             navigation.NavigateTo("/Tickets/Index");
         }
