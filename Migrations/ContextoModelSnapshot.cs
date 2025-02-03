@@ -100,6 +100,43 @@ namespace RegistrosTecnico.Migrations
                     b.ToTable("Tecnicos");
                 });
 
+            modelBuilder.Entity("RegistrosTecnico.Models.Tickets", b =>
+                {
+                    b.Property<int>("TicketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Prioridad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TiempoInvertido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TicketId");
+
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("RegistrosTecnico.Models.Clientes", b =>
                 {
                     b.HasOne("RegistrosTecnico.Models.Ciudades", "Ciudades")
@@ -117,6 +154,17 @@ namespace RegistrosTecnico.Migrations
                     b.Navigation("Ciudades");
 
                     b.Navigation("Tecnicos");
+                });
+
+            modelBuilder.Entity("RegistrosTecnico.Models.Tickets", b =>
+                {
+                    b.HasOne("RegistrosTecnico.Models.Clientes", "Clientes")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clientes");
                 });
 #pragma warning restore 612, 618
         }

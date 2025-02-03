@@ -1,15 +1,15 @@
-﻿@page "/Cliente/Index"
+﻿@page "/Tickets/Index"
+@inject TicketsServices ticketServices
 @inject ClientesServices clienteServices
 @inject TecnicoService tecnicoService
-@inject CiudadeServices ciudadeService
 @inject NavigationManager navigation
 
-<PageTitle>Clientes</PageTitle>
+<PageTitle>Tickets</PageTitle>
 <div class="container">
     <div class="card shadow-lg">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title m-0">Registro de Clientes</h5>
-            <a href="/Cliente/Create" class="btn btn-primary">
+            <h5 class="card-title m-0">Registro de Tickets</h5>
+            <a href="/tickets/Create" class="btn btn-primary">
                 <span class="bi bi-plus-square"></span> Crear
             </a>
         </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-1">
                     <button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise"
-                    @onclick="Restablecer">
+                            @onclick="Restablecer">
                     </button>
                 </div>
 
@@ -47,13 +47,13 @@
             <div class="col-3">
                 <InputSelect class="form-select" @bind-Value="filtro">
                     <option value="" selected disabled>Elija una opción</option>
-                    <option value="id">ClienteId</option>
-                    <option value="Nombres">Nombres</option>
+                    <option value="id">TicketId</option>
+                    <option value="Nombres">Cliente Nombres</option>
                     <option value="Fecha">Fecha</option>
-                    <option value="Direccion">Direccion</option>
-                    <option value="RNC">RNC</option>
-                    <option value="Limite de Credito">Limite de Credito</option>
-                    <option value="Ciudades">Ciudades</option>
+                    <option value="Asunto">Asunto</option>
+                    <option value="Prioridad">Prioridad</option>
+                    <option value="Descripcion">Descripcion</option>
+                    <option value="Tiempo Invertido">Tiempo invertido</option>
                 </InputSelect>
             </div>
 
@@ -78,37 +78,37 @@
             <thead class="table  table-striped text-black">
                 <tr>
                     <th>Id</th>
-                    <th>Nombres</th>
                     <th>Fecha</th>
-                    <th>Direccion</th>
-                    <th>Ciudad</th>
-                    <th>RNC</th>
-                    <th>LimiteCredito</th>
+                    <th>Descripcion</th>
+                    <th>Prioridad</th>
+                    <th>Cliente</th>
+                    <th>Asunto</th>
+                    <th>TiempoInvertidos</th>
                     <th>Tecnico</th>
                     <th>Modificar</th>
                     <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var cliente in Cliente)
+                @foreach (var tickets in Tickets)
                 {
-                    var Tecnico = Tecnicos.FirstOrDefault(t => t.TecnicoId == cliente.TecnicoId);
-                    var Ciudad = Ciudades.FirstOrDefault(c => c.CiudadesId == cliente.CiudadesId);
+                    var Tecnico = Tecnicos.FirstOrDefault(t => t.TecnicoId == tickets.ClienteId);
+                    var Cliente = Clientes.FirstOrDefault(c => c.ClienteId == tickets.ClienteId);
 
                     <tr>
-                        <td>@cliente.ClienteId</td>
-                        <td>@cliente.Nombres</td>
-                        <td>@cliente.FechaIngreso</td>
-                        <td>@cliente.Direccion</td>
-                        <td>@(Ciudad?.Nombres ?? "no encontrado")</td>
-                        <td>@cliente.RNC</td>
-                        <td>@cliente.LimiteCredito.ToString("N2")</td>
+                        <td>@tickets.TicketId</td>
+                        <td>@tickets.Fecha</td>
+                        <td>@tickets.Descripcion</td>
+                        <td>@tickets.Prioridad</td>
+                        <td>@(Cliente?.Nombres ?? "no encontrado")</td>
+                        <td>@tickets.Asunto</td>
+                        <td>@tickets.TiempoInvertido</td>
                         <td>@(Tecnico?.Nombres ?? "no encontrado")</td>
                         <td>
-                            <a href="/Cliente/Edit/@cliente.ClienteId" class="btn btn-outline-primary bi bi-pencil-square"></a>
+                            <a href="/Tickets/Edit/@tickets.TicketId" class="btn btn-outline-primary bi bi-pencil-square"></a>
                         </td>
                         <td class="text-center">
-                            <a href="/Cliente/Delete/@cliente.ClienteId" class="btn btn-outline-danger bi bi-trash"></a>
+                            <a href="/Tickets/Delete/@tickets.TicketId" class="btn btn-outline-danger bi bi-trash"></a>
                         </td>
 
                     </tr>
@@ -117,16 +117,15 @@
         </table>
 
         <div class="card-footer space-between">
-            <label><strong>Cantidad: @Cliente.Count()</strong></label>
-            <label><strong>Total: @Cliente.Sum(c => c.LimiteCredito)</strong</label>
+            <label><strong>Cantidad: @Tickets.Count()</strong></label>
         </div>
     </div>
 </div>
 
 @code {
-    public List<Clientes> Cliente = new List<Clientes>();
+    public List<Tickets> Tickets = new List<Tickets>();
+    public List<Clientes> Clientes = new List<Clientes>();
     public List<Tecnicos> Tecnicos = new List<Tecnicos>();
-    public List<Ciudades> Ciudades = new List<Ciudades>();
     private string filtro = "";
     private string valorFiltro = "";
     public DateTime? Desde { get; set; } = null;
@@ -134,56 +133,56 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Cliente = await clienteServices.Listar(t=>true);
+        Tickets = await ticketServices.Listar(t => true);
+        Clientes = await clienteServices.Listar(t => true);
         Tecnicos = await tecnicoService.Listar(t => true);
-        Ciudades = await ciudadeService.Listar(t => true);
     }
 
     private async Task Buscar()
     {
         if (!string.IsNullOrWhiteSpace(valorFiltro))
         {
-            if (filtro == "id" && int.TryParse(valorFiltro, out int clienteId))
+            if (filtro == "id" && int.TryParse(valorFiltro, out int ticketId))
             {
-                Cliente = await clienteServices.Listar(c => c.ClienteId == clienteId);
+                Tickets = await ticketServices.Listar(t => t.TicketId == ticketId);
             }
-            else if (filtro == "Nombres")
+            else if (filtro == "Cliente Nombres")
             {
-                Cliente = await clienteServices.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Clientes = await clienteServices.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "Fecha")
             {
-                Cliente = await clienteServices
-                .Listar(c => c.FechaIngreso >= Desde && c.FechaIngreso <= Hasta); ;
+                Tickets = await ticketServices
+                .Listar(t => t.Fecha >= Desde && t.Fecha <= Hasta); ;
             }
             else if (filtro == "Asunto")
             {
-                Cliente = await clienteServices.Listar(c => c.Direccion.ToLower().Contains(valorFiltro.ToLower()));
+                Tickets = await ticketServices.Listar(c => c.Asunto.ToLower().Contains(valorFiltro.ToLower()));
+            }
+            else if (filtro == "Prioridad")
+            {
+                Tickets = await ticketServices.Listar(t => t.Prioridad.ToLower().Contains(valorFiltro.ToLower()));
             }
             else if (filtro == "Descripcion")
             {
-                Cliente = await clienteServices.Listar(c => c.RNC.ToLower().Contains(valorFiltro.ToLower()));
+                Tickets = await ticketServices.Listar(t => t.Descripcion.ToLower().Contains(valorFiltro.ToLower()));
             }
-            else if (filtro == "Limite de Credito" && decimal.TryParse(valorFiltro, out decimal limiteCredito))
+            else if (filtro == "Tiempo Invertido")
             {
-                Cliente = await clienteServices.Listar(c => c.LimiteCredito == limiteCredito);
-            } 
-            else if (filtro == "Ciudades")
-            {
-                Ciudades = await ciudadeService.Listar(c => c.Nombres.ToLower().Contains(valorFiltro.ToLower()));
+                Tickets = await ticketServices.Listar(t => t.TiempoInvertido.ToLower().Contains(valorFiltro.ToLower()));
             }
 
 
         }
         else
         {
-            Cliente = await clienteServices.Listar(p => true);
+            Tickets = await ticketServices.Listar(p => true);
         }
     }
 
     private async Task Restablecer()
     {
-        Cliente = await clienteServices.Listar(p => true);
+        Tickets = await ticketServices.Listar(p => true);
         filtro = "";
         valorFiltro = "";
         Desde = null;

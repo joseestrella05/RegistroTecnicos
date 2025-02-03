@@ -69,6 +69,30 @@ namespace RegistrosTecnico.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    TicketId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Prioridad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Asunto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TiempoInvertido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
+                        principalColumn: "ClienteId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_CiudadesId",
                 table: "Clientes",
@@ -78,11 +102,19 @@ namespace RegistrosTecnico.Migrations
                 name: "IX_Clientes_TecnicoId",
                 table: "Clientes",
                 column: "TecnicoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_ClienteId",
+                table: "Tickets",
+                column: "ClienteId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Tickets");
+
             migrationBuilder.DropTable(
                 name: "Clientes");
 

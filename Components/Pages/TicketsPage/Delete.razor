@@ -1,0 +1,83 @@
+﻿@page "/Tickets/Delete/{TicketId:int}"
+@inject TicketsServices ticketService
+@inject NavigationManager navigationManager
+
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar Ticket</PageTitle>
+
+<EditForm Model="ticket" OnValidSubmit="EliminarTicket">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0">Tickets</h5>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <h7><strong>¿Est&aacute;s seguro de que quieres eliminar este Ticket?</strong></h7>
+                @*Datos*@
+                <div class="mb-1">
+                    <p class="mb-0">TicketId: @ticket.TicketId</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Fecha: @ticket.Fecha </p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Prioridad: @ticket.Prioridad</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Decripcion: @ticket.Descripcion</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Asunto: @ticket.Asunto</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">TiempoInvertido: @ticket.TiempoInvertido</p>
+                </div>
+
+            </div>
+            @*Footer*@
+            <div class="card-footer text-center mt-3">
+                <a type="button" href="/Tickets/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Volver </a>
+                <button type="button" class="btn btn-outline-danger ml-2" @onclick="EliminarTicket"><span class="bi bi-check-circle-fill"></span> Eliminar </button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+@code {
+    [Parameter]
+    public int TicketId { get; set; }
+    public Tickets ticket { get; set; } = new Tickets();
+
+    [Inject] protected ToastService ToastService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (TicketId > 0)
+        {
+            ticket = await ticketService.Buscar(TicketId);
+        }
+    }
+
+    public async Task EliminarTicket()
+    {
+        if (ticket != null)
+        {
+            var eliminar = await ticketService.Eliminar(TicketId);
+            if (eliminar)
+            {
+                ToastService.Notify(new(ToastType.Success, "Exito", $"Cliente eliminado correctamente."));
+                navigation.NavigateTo("/Tickets/Index");
+            }
+            else
+            {
+                ToastService.Notify(new(ToastType.Danger, "Eliminar", $"Error al eliminar Cliente."));
+
+            }
+        }
+    }
+
+}
