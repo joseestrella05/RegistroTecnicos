@@ -126,9 +126,8 @@ namespace RegistrosTecnico.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TiempoInvertido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TiempoInvertido")
+                        .HasColumnType("int");
 
                     b.HasKey("TicketId");
 

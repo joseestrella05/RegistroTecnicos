@@ -79,7 +79,7 @@ namespace RegistrosTecnico.Migrations
                     Prioridad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Asunto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TiempoInvertido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TiempoInvertido = table.Column<int>(type: "int", nullable: false),
                     ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
