@@ -12,4 +12,6 @@ public class Contexto(DbContextOptions<Contexto> options) : DbContext(options)
     public DbSet<Ciudades> Ciudades { get; set; }
 
     public DbSet<Tickets> Tickets { get; set; }
+
+    public DbSet<Sistemas> Sistemas { get; set; }
 }
