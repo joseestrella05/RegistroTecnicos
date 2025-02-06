@@ -20,6 +20,7 @@ builder.Services.AddScoped<TecnicoService>();
 builder.Services.AddScoped<ClientesServices>();
 builder.Services.AddScoped<CiudadeServices>();
 builder.Services.AddScoped<TicketsServices>();
+builder.Services.AddScoped<SistemaServices>();
 
 var app = builder.Build();
 
