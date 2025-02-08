@@ -69,8 +69,13 @@
         if (SistemaId > 0)
         {
             await sistemaService.Guardar(Sistema);
-            ToastService.Notify(new(ToastType.Success, "Exito", $"Sistema Creado correctamente."));
+            ToastService.Notify(new(ToastType.Success, "Exito", $"Sistema editado correctamente."));
             navigation.NavigateTo("/Sistemas/Index/");
+        }
+
+        else
+        {
+            ToastService.Notify(new(ToastType.Danger, "Error", $"No se pudo editar el sistema."));
         }
         
     }
