@@ -80,6 +80,26 @@ namespace RegistrosTecnico.Migrations
                     b.ToTable("Clientes");
                 });
 
+            modelBuilder.Entity("RegistrosTecnico.Models.Sistemas", b =>
+                {
+                    b.Property<int>("SistemasId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SistemasId"));
+
+                    b.Property<int>("Complejidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SistemasId");
+
+                    b.ToTable("Sistemas");
+                });
+
             modelBuilder.Entity("RegistrosTecnico.Models.Tecnicos", b =>
                 {
                     b.Property<int>("TecnicoId")

@@ -25,6 +25,20 @@ namespace RegistrosTecnico.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sistemas",
+                columns: table => new
+                {
+                    SistemasId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Complejidad = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sistemas", x => x.SistemasId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tecnicos",
                 columns: table => new
                 {
@@ -112,6 +126,9 @@ namespace RegistrosTecnico.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Sistemas");
+
             migrationBuilder.DropTable(
                 name: "Tickets");
 
