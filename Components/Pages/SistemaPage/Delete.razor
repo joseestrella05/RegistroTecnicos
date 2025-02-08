@@ -1,0 +1,70 @@
+﻿@page "/Sistemas/Delete/{SistemaId:int}"
+@inject SistemaServices sistemaService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Eliminar t&eacute;cnico</PageTitle>
+<EditForm Model="Sistema" OnValidSubmit="Eliminar">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0">Eliminar Sistema</h5>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <h7><strong>¿Est&aacute;s seguro de que quieres eliminar este Sistema?</strong></h7>
+                @*Datos*@
+                <div class="mb-1">
+                    <p class="mb-0">SistemaId: @Sistema.SistemasId</p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Descripcion: @Sistema.Descripcion </p>
+                </div>
+                <div class="mb-1">
+                    <p class="mb-0">Complejidad: @Sistema.Complejidad</p>
+                </div>
+            </div>
+            @*Footer*@
+            <div class="card-footer text-center mt-3">
+                <a type="button" href="/Sistemas/Index/" class="btn btn-outline-danger"><span class="bi bi-arrow-bar-left"></span> Volver </a>
+                <button type="button" class="btn btn-outline-danger ml-2" @onclick="Eliminar"><span class="bi bi-check-circle-fill"></span> Eliminar </button>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int SistemaId { get; set; }
+    public Sistemas Sistema { get; set; } = new Sistemas();
+    [Inject] protected ToastService ToastService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (SistemaId > 0)
+        {
+            Sistema = await sistemaService.Buscar(SistemaId);
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        if (Sistema != null)
+        {
+            var eliminar = await sistemaService.Eliminar(SistemaId);
+            if (eliminar)
+            {
+                ToastService.Notify(new(ToastType.Success, "Exito", $"Sistema eliminado correctamente."));
+                navigation.NavigateTo("/Sistemas/Index/");
+            }
+            else
+            {
+                ToastService.Notify(new(ToastType.Success, "Exito", $"No se puedo eliminar el sistema."));
+            }
+        }
+    }
+}
