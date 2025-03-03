@@ -16,6 +16,8 @@ public class Prestamos
 
     public double Balance { get; set; }
 
+    public int CuotaNo { get; set; }
+
     [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un deudor válido")]
     public int DeudorId { get; set; }
 
