@@ -15,16 +15,13 @@ public class Tickets
     public string? Prioridad { get; set; }
 
     [Required(ErrorMessage = "El campo es obligatoria")]
-    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "No se permiten Numero")]
     public string? Asunto { get; set; }
 
     [Required(ErrorMessage = "El Campo es obligatorio.")]
-    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "No se permiten Numero")]
     public string? Descripcion { get; set; }
 
     [Required(ErrorMessage = "El Campo es obligatorio.")]
-    [RegularExpression(@"^[A-Z0-9\d{2}]+$", ErrorMessage = "Solo se permiten Numero")]
-    public string? TiempoInvertido { get; set; }
+    public int TiempoInvertido { get; set; }
 
     public int ClienteId { get; set; }
 
