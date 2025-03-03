@@ -24,6 +24,8 @@ builder.Services.AddScoped<SistemaServices>();
 builder.Services.AddScoped<DeudoresService>();
 builder.Services.AddScoped<PrestamosService>();
 builder.Services.AddScoped<CobrosServices>();
+builder.Services.AddScoped<PrestamosDetalleService>();
+
 
 var app = builder.Build();
 
